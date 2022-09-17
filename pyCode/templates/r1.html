@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>欢迎注册</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		body {
+			height: 580px;
+			background: #243b55;
+			font-size: 16px;
+			color: #03e9f4;
+		}
+
+		.loginBox {
+			width: 400px;
+			height: 364px;
+			background-color: #0c1622;
+			margin:160px auto;
+			border-radius: 10px;
+			/* box-shadow: 0 15px 25px 0 rgba(0, 0, 0, .6); */
+			padding: 40px;
+			box-sizing: border-box;
+		}
+		h2 {
+			text-align: center;
+			color: aliceblue;
+			margin-top: 10px;
+			margin-bottom: 40px;
+			font-family: 'Courier New';
+		}
+		.username,.pwd,.repwd{
+			padding: 5px 10px;
+			margin-top: 10px;
+			margin-left: 70px;
+			font-family: 'Courier New';
+		}
+		.btn{
+			padding: 10px 20px;
+			margin-top: 30px;
+			border-radius: 5px;
+			margin-left: 120px;
+		}
+		.btn:hover {
+			border-radius: 5px;
+			color: #fff;
+			background: #03e9f4;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="loginBox">
+		<h2>欢迎注册</h2>
+		<form action=""  method="post">
+        <p><input type="text" placeholder="用户名"  name="username1" class="username"></p>
+        <p><input type="password" placeholder="密码"  name="pwd1" class="pwd"></p>
+        <p><input type="password" placeholder="确认密码"  name="repwd1" class="repwd"></p>
+        <p><input type="submit"  value="提交" class="btn"></p>
+
+    </form>
+	</div>
+</body>
+</html>

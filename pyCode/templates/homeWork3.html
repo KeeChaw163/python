@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index页面</title>
+    <style>
+        *{
+            background-color:#C0C0C0;
+        }
+
+        table{
+            margin-left:300px;
+            width:500px;
+            border-collapse: collapse;
+            border:2px solid black;
+        }
+        tr{
+          border:2px solid black;
+        }
+      .home{
+          font-size: 17px;
+          font-weight: 700;
+          text-align: center;
+
+      }
+      .qi{
+        background-color:#808080;
+      }
+      td{
+        border:2px solid black;
+        text-align: center;
+      }
+      .a{
+          color: red;
+      }
+    </style>
+</head>
+<body>
+  <table>
+         <tr class="home">
+         <tr class="qi">
+
+        <td>序号</td>
+        <td>姓名</td>
+        <td>平时成绩</td>
+        <td>期末成绩</td>
+      </tr>
+      {% for student in students %}
+      <tr>
+         <td>{{loop.index}}</td>
+         <td>{{student.studentname}}</td>
+
+          {%if student.pscore < '60'%}
+         <td class="a">{{student.pscore}}</td>
+         {%else%}
+          <td>{{student.pscore}}</td>
+        {% endif %}
+          {%if student.qscore < '60'%}
+         <td class="a">{{student.qscore}}</td>
+         {%else%}
+          <td >{{student.qscore}}</td>
+        {% endif %}
+        {%endfor%}
+       </tr>
+
+  </table>
+</body>
+</html>
