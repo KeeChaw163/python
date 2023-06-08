@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}展览{% endblock %}
+
+{% block navbar %}
+<section class="content-header">
+    <h1>“五一”去那逛&nbsp;&nbsp;<span style="font-size:8px;color:#F7A0A0;">勿忘礼仪之邦，牢记中国形象</span></h1>
+    <ol class="breadcrumb">
+        <li><i class="fa fa-dashboard"></i> 当前位置</li>
+        <li class="active">旅游文化展览 > “五一”去那逛</li>
+    </ol>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="box box-primary">
+    <div class="box-body">
+        <table  id="pageListTable" cellspacing="0" width="100%" style="font-size:16px;text-align:center;margin-top: 10px;">
+            <thead>
+            <tr style="height:40px;background:#0B1427;font-size:20px;">
+                <td style="width:100px;">时&nbsp;&nbsp;长</td>
+                <td>城&nbsp;&nbsp;市</td>
+                <td>景&nbsp;&nbsp;点</td>
+                <td>标&nbsp;&nbsp;签</td>
+            </tr>
+            </thead>
+            <tbody id="pageListTableBody" style="color:#3DA8BF;">
+            {% for ech2 in c2_ech2 %}
+            {% if loop.index%2 == 0 %}
+            <tr style="height:35px; background:#0B1427;">
+                <td>{{ ech2[2] }}</td>
+                <td>{{ ech2[3] }}</td>
+
+                <td>{{ ech2[4] }}</td>
+
+                <td>{{ ech2[6] }}</td>
+            </tr>
+            {% else %}
+            <tr style="height:35px; background-color:#080A19">
+                <td>{{ ech2[2] }}</td>
+                <td>{{ ech2[3] }}</td>
+
+                <td>{{ ech2[4] }}</td>
+
+                <td>{{ ech2[6] }}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+
+{% endblock %}
+

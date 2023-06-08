@@ -1,0 +1,665 @@
+{% extends "base.html" %}
+
+{% block title %}首页{% endblock %}
+
+{% block navbar %}
+<section class="content-header" id="data" data="{{r_ech1}}" data1="{{r_ech2}}" data2="{{r_ech3}}" data3="{{r_ech4}}">
+    <h1>中国旅游概况&nbsp;&nbsp;<span style="font-size:8px;color:#F7A0A0;">服章之美，礼仪之邦</span></h1>
+    <ol class="breadcrumb">
+        <li><i class="fa fa-dashboard"></i> 当前位置</li>
+        <li class="active">中国旅游概况</li>
+    </ol>
+</section>
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .inner h3{color:#fff; /*设置文字颜色*/text-decoration: none;-webkit-animation: shine 3s infinite;/*设置动画*/}
+		      @-webkit-keyframes shine{/*创建动画*/0%,100%{ color:#fff;text-shadow:0 0 10px #fff,0 0 10px #fff; } 50%{ text-shadow:0 0 10px #000000,0 0 40px #000000; }}
+    .inner p{font-size:24px}
+</style>
+
+<div class="box box-primary">
+    <div class="box-body">
+        <div class="row">
+            <div class="col-lg-3 col-xs-6">
+                <div class="small-box bg-aqua">
+                    <div class="inner">
+                        <h3 id="count01">{{xx[0][1]}}</h3>
+                        <p class="word">想去{{xx[0][0]}}人数</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-ios-gear-outline"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="small-box bg-green">
+                    <div class="inner">
+                        <h3 id="count02">{{xx[0][2]}}</h3>
+                        <p class="word">去过{{xx[0][0]}}人数</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-iphone"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="small-box bg-yellow">
+                    <div class="inner">
+                        <h3 id="count03">{{xx[1][1]}}</h3>
+                        <p class="word">想去{{xx[1][0]}}人数</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="small-box bg-red">
+                    <div class="inner">
+                        <h3 id="count04">{{xx[1][2]}}</h3>
+                        <p class="word">去过{{xx[1][0]}}人数</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-pie-graph"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ech1" style="width: 740px;height:330px;text-align: center;float: left;"></div>
+        <script>
+                var j_r_ech1 = document.getElementById('data').getAttribute('data');
+                var js_r_ech1 = JSON.parse(j_r_ech1);
+
+                var chartDom = document.getElementById('ech1');
+                var myChart = echarts.init(chartDom);
+                var option;
+
+                var x = [];
+                var y = [];
+                for(var i=0;i<js_r_ech1.length;i++){
+                    x[i] = js_r_ech1[i][0];
+                    y[i] = js_r_ech1[i][1];
+                }
+
+                option = {
+                  title: {
+                    text: '本月景点销售量',
+                    left: 10,
+                    top: 10,
+                    textStyle: {
+                        color: '#11F7A2'
+                    },
+                  },
+                  backgroundColor: '#0A2E5D',
+                  toolbox: {
+
+                    feature: {
+                      dataZoom: {
+                        yAxisIndex: 'none'
+                      },
+                      restore: {},
+                      saveAsImage: {}
+                    }
+                  },
+                  tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                      type: 'cross',
+                      animation: false,
+                      label: {
+                        backgroundColor: '#505765'
+                      }
+                    }
+                  },
+                  legend: {
+                    data: '本月销量',
+                    left: 10
+                  },
+                  grid: {
+                    left: '20',
+                    top: '60',
+                    right: '30',
+                    bottom: '50',
+                    containLabel: true
+                  },
+                  dataZoom: [
+                    {
+                      show: true,
+                      realtime: true,
+                      height: 20,
+                      start: 65,
+                      end: 85,
+                      handleStyle: {
+                        color: '#5B3AAE'
+                      },
+                      textStyle: {
+                        color: 'rgba(204,187,225,0.5)'
+                      },
+                      fillerColor: 'rgba(67,55,160,0.4)',
+                      borderColor: 'rgba(204,187,225,0.5)'
+                    },
+                    {
+                      type: 'inside',
+                      realtime: true,
+                      start: 65,
+                      end: 85
+                    }
+                  ],
+                  xAxis: [
+                    {
+                      type: 'category',
+                      boundaryGap: false,
+                      axisLabel: {
+                        textStyle: {
+                          color: 'rgba(255,255,255,.6)',
+                          fontSize: 12
+                        },
+                       },
+                      axisLine: { onZero: false ,
+                            lineStyle: {
+                          color: 'rgba(255,255,255,.2)'
+                        }
+                      },
+                      // prettier-ignore
+                      data: x.map(function (str) {
+                                return str.replace(' ', '\n');
+                            })
+                    }
+                  ],
+                  yAxis: [
+                    {
+                      axisLine: {
+                        lineStyle: {
+                          color: 'rgba(255,255,255,.1)'
+                        }
+                      },
+                      axisLabel: {
+                        textStyle: {
+                          color: 'rgba(255,255,255,.6)',
+                          fontSize: 12
+                        }
+                      },
+                      min: 0,
+                      max: 15000,
+                      type: 'value',
+                      color: 'rgba(255,255,255,.1)'
+                    }
+                  ],
+                  series: [
+                    {
+                      name: '本月销量',
+                      type: 'line',
+                      areaStyle: {
+                        normal: {
+                          color: new echarts.graphic.LinearGradient(
+                            0,
+                            0,
+                            0,
+                            1,
+                            [
+                              {
+                                offset: 0,
+                                color: 'rgba(0, 216, 135, 0.4)'
+                              },
+                              {
+                                offset: 0.8,
+                                color: 'rgba(0, 216, 135, 0.1)'
+                              }
+                            ],
+                            false
+                          ),
+                          shadowColor: 'rgba(0, 0, 0, 0.1)'
+                        }
+                      },
+                      lineStyle: {
+                        normal: {
+                          color: '#00d887',
+                          width: 2
+                        }
+                      },
+                      emphasis: {
+                        focus: 'series'
+                      },
+                      markArea: {
+                        silent: true,
+                        itemStyle: {
+                          opacity: 0.3
+                        }
+                      },
+                      // prettier-ignore
+                      data:y
+                    }
+                  ]
+                };
+
+                option && myChart.setOption(option);
+            </script>
+        <div id="ech4" style="width: 480px;height:330px;text-align: center;float:right;" ></div>
+        <script>
+           var j_r_ech4 = document.getElementById('data').getAttribute('data3');
+           var js_r_ech4 = JSON.parse(j_r_ech4);
+
+            var chartDom = document.getElementById('ech4');
+            var myChart = echarts.init(chartDom);
+            var option;
+
+            option = {
+              title: {
+                    text: '城市旅游人数',
+                    left: 10,
+                    top: 10,
+                    textStyle: {
+                        color: '#3A8FF0'
+                    },
+                  },
+              backgroundColor: '#0A2E5D',
+
+              tooltip: {
+                trigger: 'item'
+              },
+              legend: {
+                top: '5%',
+                left: 'right',
+
+                textStyle: {
+                    color: '#98CB76'
+                 },
+
+              },
+
+              series: [
+                {
+                  name: '累计旅游人数',
+                  type: 'pie',
+                  radius: ['40%', '70%'],
+                  avoidLabelOverlap: false,
+                  label: {
+                    show: false,
+                    position: 'center'
+                  },
+                  emphasis: {
+                    label: {
+                      show: true,
+                      fontSize: 40,
+                      fontWeight: 'bold'
+                    }
+                  },
+                  labelLine: {
+                    show: false
+                  },
+                  color:['#45C2E0','#C1EBDD', '#FFC851','#FF9393'],
+                  data: [
+                    { value: js_r_ech4[0][1], name: js_r_ech4[0][0] },
+                    { value: js_r_ech4[1][1], name: js_r_ech4[1][0] },
+                    { value: js_r_ech4[2][1], name: js_r_ech4[2][0] },
+                    { value: js_r_ech4[3][1], name: js_r_ech4[3][0] }
+                  ]
+                }
+              ]
+            };
+            option && myChart.setOption(option);
+
+        </script>
+        <div id="ech3" style="width: 740px;height:330px;text-align: center;float:left;margin-top: 20px;" ></div>
+        <script>
+
+                    var j_r_ech3 = document.getElementById('data').getAttribute('data2');
+                    var js_r_ech3 = JSON.parse(j_r_ech3);
+
+                    var chartDom = document.getElementById('ech3');
+                    var myChart = echarts.init(chartDom);
+                    var option;
+
+                    dataAxis = [];
+                    data = [];
+                    for(var i=0;i<js_r_ech3.length;i++){
+                        dataAxis[i] = js_r_ech3[i][0];
+                        data[i] = js_r_ech3[i][1];
+                    }
+                    let yMax = 500;
+                    let dataShadow = [];
+                    for (let i = 0; i < data.length; i++) {
+                      dataShadow.push(yMax);
+                    }
+                    option = {
+                      title: {
+                        text: '各城市去过人数',
+                        left: 10,
+                        top: 10,
+                        textStyle: {
+                            color: '#3A8FF0'
+                        },
+                      },
+                      tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                          type: 'shadow'
+                        }
+                      },
+                      backgroundColor: '#0A2E5D',
+                      xAxis: {
+                        data: dataAxis,
+                        axisLabel: {
+                          inside: true,
+                          color: '#fff'
+                        },
+                        axisTick: {
+                          show: false
+                        },
+                        axisLine: {
+                          show: false
+                        },
+                        z: 10
+                      },
+                      yAxis: {
+                        axisLine: {
+                          show: false
+                        },
+                        axisTick: {
+                          show: false
+                        },
+                        axisLabel: {
+                          color: '#999'
+                        }
+                      },
+                      dataZoom: [
+                        {
+                          type: 'inside'
+                        }
+                      ],
+                      series: [
+                        {
+                          type: 'bar',
+                          //showBackground: true,
+                          itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                              { offset: 0, color: '#83bff6' },
+                              { offset: 0.5, color: '#188df0' },
+                              { offset: 1, color: '#188df0' }
+                            ])
+                          },
+                          emphasis: {
+                            itemStyle: {
+                              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: '#2378f7' },
+                                { offset: 0.7, color: '#2378f7' },
+                                { offset: 1, color: '#83bff6' }
+                              ])
+                            }
+                          },
+                          data: data
+                        }
+                      ]
+                    };
+                    // Enable data zoom when user click bar.
+                    const zoomSize = 6;
+                    myChart.on('click', function (params) {
+                      console.log(dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)]);
+                      myChart.dispatchAction({
+                        type: 'dataZoom',
+                        startValue: dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)],
+                        endValue:
+                          dataAxis[Math.min(params.dataIndex + zoomSize / 2, data.length - 1)]
+                      });
+                    });
+
+                    option && myChart.setOption(option);
+
+                </script>
+        <div id="ech2" style="width: 480px;height:330px;text-align: center;float: right;margin-top: 20px;"></div>
+        <script>
+            var j_r_ech2 = document.getElementById('data').getAttribute('data1');
+            var js_r_ech2 = JSON.parse(j_r_ech2);
+
+            var chartDom = document.getElementById('ech2');
+            var myChart = echarts.init(chartDom);
+            var option;
+
+            var x = [];
+            var y1 = [];
+            var y2 = [];
+            for(var i=0;i<js_r_ech2.length;i++){
+                x[i] = js_r_ech2[i][0];
+                y1[i] = js_r_ech2[i][1];
+                y2[i] = js_r_ech2[i][2];
+            }
+
+            option = {
+              title: {
+                text: '本月景点销售价与优惠价',
+                left: 10,
+                top: 10,
+                textStyle: {
+                    color: '#11F7A2'
+                },
+              },
+              backgroundColor: '#0A2E5D',
+              tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                  lineStyle: {
+                    color: '#dddc6b'
+                  }
+                }
+              },
+              legend: {
+                top: '10%',
+                textStyle: {
+                  color: 'rgba(255,255,255,.5)',
+                  fontSize: '12'
+                }
+              },
+              grid: {
+                left: '20',
+                top: '60',
+                right: '30',
+                bottom: '50',
+                containLabel: true
+              },
+
+              xAxis: [
+                {
+                  type: 'category',
+                  boundaryGap: false,
+                  axisLabel: {
+                    textStyle: {
+                      color: 'rgba(255,255,255,.6)',
+                      fontSize: 12
+                    }
+                  },
+                  axisLine: {
+                    lineStyle: {
+                      color: 'rgba(255,255,255,.2)'
+                    }
+                  },
+
+                  data: x
+                },
+                {
+                  axisPointer: {
+                    show: false
+                  },
+                  axisLine: {
+                    show: false
+                  },
+                  position: 'bottom',
+                  offset: 20
+                }
+              ],
+
+              yAxis: [
+                {
+                  max:1500,
+                  min:0,
+                  type: 'value',
+                  axisTick: {
+                    show: false
+                  },
+                  axisLine: {
+                    lineStyle: {
+                      color: 'rgba(255,255,255,.1)'
+                    }
+                  },
+                  axisLabel: {
+                    textStyle: {
+                      color: 'rgba(255,255,255,.6)',
+                      fontSize: 12
+                    }
+                  },
+
+                  splitLine: {
+                    lineStyle: {
+                      color: 'rgba(255,255,255,.1)'
+                    }
+                  }
+                }
+              ],
+              //缩放组件
+              dataZoom: [
+                //滑动条
+                {
+                  show: true,
+                  height: 20,
+                  xAxisIndex: [0],
+                  //调整缩放组件位置
+                  //top bottom left right
+                  bottom: 15,
+                  type: 'slider',
+                  start: 20,
+                  end: 80,
+                  handleIcon:
+                    'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+                  handleSize: '110%',
+                  handleStyle: {
+                    color: '#5B3AAE'
+                  },
+                  textStyle: {
+                    color: 'rgba(204,187,225,0.5)'
+                  },
+                  fillerColor: 'rgba(67,55,160,0.4)',
+                  borderColor: 'rgba(204,187,225,0.5)'
+                },
+                //内置于坐标系中，使用户可以在坐标系上
+                //通过鼠标拖拽、鼠标滚轮、手指滑动（触屏上）来缩放或漫游坐标系。
+                {
+                  type: 'inside',
+                  show: true,
+                  height: 15,
+                  start: 1,
+                  end: 35
+                }
+              ],
+              series: [
+                {
+                  name: '优惠价',
+                  type: 'line',
+                  smooth: true,
+                  symbol: 'circle',
+                  symbolSize: 5,
+                  showSymbol: false,
+                  lineStyle: {
+                    normal: {
+                      color: '#0184d5',
+                      width: 2
+                    }
+                  },
+                  areaStyle: {
+                    normal: {
+                      color: new echarts.graphic.LinearGradient(
+                        0,
+                        0,
+                        0,
+                        1,
+                        [
+                          {
+                            offset: 0,
+                            color: 'rgba(1, 132, 213, 0.4)'
+                          },
+                          {
+                            offset: 0.8,
+                            color: 'rgba(1, 132, 213, 0.1)'
+                          }
+                        ],
+                        false
+                      ),
+                      shadowColor: 'rgba(0, 0, 0, 0.1)'
+                    }
+                  },
+                  itemStyle: {
+                    normal: {
+                      color: '#0184d5',
+                      borderColor: 'rgba(221, 220, 107, .1)',
+                      borderWidth: 12
+                    }
+                  },
+                  data: y1
+                },
+                {
+                  name: '实际价',
+                  type: 'line',
+                  smooth: true,
+                  symbol: 'circle',
+                  symbolSize: 5,
+                  showSymbol: false,
+                  lineStyle: {
+                    normal: {
+                      color: '#00d887',
+                      width: 2
+                    }
+                  },
+                  areaStyle: {
+                    normal: {
+                      color: new echarts.graphic.LinearGradient(
+                        0,
+                        0,
+                        0,
+                        1,
+                        [
+                          {
+                            offset: 0,
+                            color: 'rgba(0, 216, 135, 0.4)'
+                          },
+                          {
+                            offset: 0.8,
+                            color: 'rgba(0, 216, 135, 0.1)'
+                          }
+                        ],
+                        false
+                      ),
+                      shadowColor: 'rgba(0, 0, 0, 0.1)'
+                    }
+                  },
+                  itemStyle: {
+                    normal: {
+                      color: '#00d887',
+                      borderColor: 'rgba(221, 220, 107, .1)',
+                      borderWidth: 12
+                    }
+                  },
+                  data: y2
+                }
+              ]
+            };
+
+            option && myChart.setOption(option);
+        </script>
+    </div>
+    <div class="box-footer">
+        <div class="alert alert-info alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <h4><i class="icon fa fa-info"></i> 世界那么大，我想去看看</h4>
+            <ol>
+                <li>曾经一路搭车到柏林，途径88段风景，车轮驶过的地方都有我的足迹。</li>
+                <li>人的一生至少要有两次冲动，一次为奋不顾身的爱情，一次为说走就走的旅行。</li>
+            </ol>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

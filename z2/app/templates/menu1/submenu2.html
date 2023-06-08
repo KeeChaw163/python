@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block title %}查询{% endblock %}
+
+{% block navbar %}
+<section class="content-header">
+    <h1>中国&nbsp;&nbsp;<span style="font-size:8px;color:#F7A0A0;">当前热门景点数&nbsp;<span style="font-size:20px;">{{ ech5 |length }}</span> 个</span></h1>
+
+    <ol class="breadcrumb">
+        <li><i class="fa fa-dashboard"></i> 当前位置</li>
+        <li class="active">旅游信息自主查询 > 目的地景点查询</li>
+    </ol>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="box box-primary">
+    <div class="box-body">
+        <form method="post" action="{{url_for('main.getMenu1_search')}}" >
+            <input type="text" name="in_content" id="in_content" placeholder="请输入目的地查询" style="color:#000000">
+            <input type="submit" value="查询一下" style="background:#5AF6A4;">
+        </form>
+        <table  id="pageListTable" cellspacing="0" width="100%" style="font-size:16px;text-align:center;margin-top: 10px;">
+            <thead>
+                <tr style="height:40px;background:#0B1427;font-size:20px;">
+                    <td>城&nbsp;&nbsp;市</td>
+                    <td>景&nbsp;&nbsp;点</td>
+                    <td>销&nbsp;&nbsp;量</td>
+                    <td>团&nbsp;&nbsp;购&nbsp;&nbsp;价</td>
+                    <td>原&nbsp;&nbsp;价</td>
+                </tr>
+            </thead>
+            <tbody id="pageListTableBody" style="color:#3DA8BF;">
+            {% for ech in ech5 %}
+             {% if loop.index%2 == 0 %}
+                <tr style="height:35px; background:#0B1427;">
+                    <td>{{ ech[1]}}</td>
+                    <td>{{ ech[0]}}</td>
+
+                    <td>{{ ech[2]}}</td>
+
+                    <td>{{ ech[3]}}</td>
+                    <td>{{ ech[4]}}</td>
+                </tr>
+              {% else %}
+                <tr style="height:35px; background-color:#080A19">
+                    <td>{{ ech[1]}}</td>
+                    <td>{{ ech[0]}}</td>
+
+                    <td>{{ ech[2]}}</td>
+
+                    <td>{{ ech[3]}}</td>
+                    <td>{{ ech[4]}}</td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+        <p id="pages" style="text-align: right;margin-top: 40px; ">
+            <span id="spanFirst">首页&nbsp;&nbsp;</span>
+            <span id="spanPre">上一页&nbsp;&nbsp;</span>
+            <span id="spanNext">下一页&nbsp;&nbsp;</span>
+            <span id="spanLast">&nbsp;&nbsp;尾  页&nbsp;&nbsp;</span>
+            &nbsp;&nbsp;第<strong id="spanPageNum"></strong>/
+            <strong id="spanTotalPage"></strong>页 </p>
+        </p>
+        <script>
+            	var theUL = document.getElementById("pageListTableBody");
+                var totalPage = document.getElementById("spanTotalPage");
+                var pageNum = document.getElementById("spanPageNum"); //获取当前页<span>
+                var spanPre = document.getElementById("spanPre"); //获取上一页<span>
+                var spanNext = document.getElementById("spanNext"); //获取下一页<span>
+                var spanFirst = document.getElementById("spanFirst"); //获取第一页<span>
+                var spanLast = document.getElementById("spanLast"); //获取最后一页<span>
+                var numberRowsInTable = theUL.getElementsByTagName("tr").length; //记录总条数
+                var pageSize = 20; //每页显示的记录条数
+                var page = 1; //当前页，默认第一页
+
+                //下一页
+                function next(){
+                    hideTable();
+                    currentRow = pageSize * page;
+                    maxRow = currentRow + pageSize;
+                    if ( maxRow > numberRowsInTable ) maxRow = numberRowsInTable;
+                    for ( var i = currentRow; i< maxRow; i++ ){
+                        theUL.getElementsByTagName("tr")[i].style.display = '';
+                    }
+                    page++;
+                    if ( maxRow == numberRowsInTable ) {
+                        nextText();
+                        lastText();
+                    }
+                    showPage();
+                    preLink();
+                    firstLink();
+                }
+
+                //上一页
+                function pre(){
+                    hideTable();
+                    page--;
+                    currentRow = pageSize * page;
+                    maxRow = currentRow - pageSize;
+                    if ( currentRow > numberRowsInTable ) currentRow = numberRowsInTable;
+                    for ( var i = maxRow; i< currentRow; i++ ){
+                        theUL.getElementsByTagName("tr")[i].style.display = '';
+                    }
+                    if ( maxRow == 0 ){
+                        preText();
+                        firstText();
+                    }
+                    showPage();
+                    nextLink();
+                    lastLink();
+                }
+
+                //第一页
+                function first(){
+                    hideTable();
+                    page = 1;
+                    for ( var i = 0; i<pageSize; i++ ){
+                        theUL.getElementsByTagName("tr")[i].style.display = '';
+                    }
+                    showPage();
+                    firstText();
+                    preText();
+                    nextLink();
+                    lastLink();
+                }
+
+                //最后一页
+                function last(){
+                    hideTable();
+                    page = pageCount();
+                    currentRow = pageSize * (page - 1);
+                    for ( var i = currentRow; i<numberRowsInTable; i++ ){
+                        theUL.getElementsByTagName("tr")[i].style.display = '';
+                    }
+                    showPage();
+                    preLink();
+                    nextText();
+                    firstLink();
+                    lastText();
+                }
+
+                function hideTable(){
+                    for ( var i = 0; i<numberRowsInTable; i++ ){
+                        theUL.getElementsByTagName("tr")[i].style.display = 'none';
+                    }
+                }
+
+                function showPage(){
+                    pageNum.innerHTML = page;
+                }
+
+                //总共页数
+                function pageCount(){
+                    return Math.ceil(numberRowsInTable/pageSize);
+                }
+                //显示链接
+                function preLink(){
+                    spanPre.innerHTML = "<a href='javascript:pre();'>&nbsp;&nbsp;上一页&nbsp;&nbsp;</a>";
+                }
+                function preText(){
+                    spanPre.innerHTML = "上一页";
+                }
+                function nextLink(){
+                    spanNext.innerHTML = "<a href='javascript:next();'>&nbsp;&nbsp;下一页&nbsp;&nbsp;</a>";
+                }
+                function nextText(){
+                    spanNext.innerHTML = "下一页";
+                }
+                function firstLink(){
+                    spanFirst.innerHTML = "<a href='javascript:first();'>首页&nbsp;&nbsp;</a>";
+                }
+                function firstText(){
+                    spanFirst.innerHTML = "首 页";
+                }
+                function lastLink(){
+                    spanLast.innerHTML = "<a href='javascript:last();'>&nbsp;&nbsp;尾&nbsp;页</a>";
+                }
+                function lastText(){
+                    spanLast.innerHTML = "尾页";
+                }
+
+                //隐藏
+                function hide(){
+                    for ( var i = pageSize; i<numberRowsInTable; i++ ){
+                        theUL.getElementsByTagName("tr")[i].style.display = 'none';
+                    }
+                    totalPage.innerHTML = pageCount();
+                    pageNum.innerHTML = '1';
+                    nextLink();
+                    lastLink();
+                }
+                hide();
+
+        </script>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+
+{% endblock %}
+

@@ -1,0 +1,458 @@
+{% extends "base.html" %}
+
+{% block title %}展览{% endblock %}
+
+{% block navbar %}
+<section class="content-header" id="data" data1="{{ c1_ech1 }}"  data2 = "{{ c2_ech2 }}">
+    <h1>数据展览&nbsp;&nbsp;<span style="font-size:8px;color:#F7A0A0;">游遍天下山川，只留脚印一串</span></h1>
+    <ol class="breadcrumb">
+        <li><i class="fa fa-dashboard"></i> 当前位置</li>
+        <li class="active">旅游文化展览 > 数据展览</li>
+    </ol>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="box box-primary">
+    <div class="box-body">
+        <div id="cech1" style="width:740px;height:330px;margin-top:10px;float:left"></div>
+        <script>
+            // 基于准备好的dom，初始化echarts实例
+            var j_cech1 = document.getElementById('data').getAttribute('data1');
+            var js_c_ech1 = JSON.parse(j_cech1);
+
+            var chartDom = document.getElementById('cech1');
+            var myChart = echarts.init(chartDom);
+            var option;
+            var x = [];
+            var y = [];
+            for(var i=0;i<10;i++){
+               x[i] = js_c_ech1[i][0];
+               y[i] = js_c_ech1[i][1];
+            }
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: '热门城市Top榜',
+                    left: 10,
+                    top: 10,
+                    textStyle: {
+                        color: '#11F7A2'
+                    },
+                  },
+                backgroundColor: '#0A2E5D',
+                tooltip: {
+                textStyle:{fontSize:20}
+                },
+                grid: {
+                    top: "25%",
+                    left: '5%', //折线框左边距
+                    right: '10%', //折线框右边距
+                    bottom: '-2%', //折线框下边距
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    name: "城市",
+                    data: x,
+                    nameTextStyle: { //坐标轴名称样式
+                        color: "#fff",
+                        fontSize: "12",
+                        backgroundColor: "" //文字块背景色
+                    },
+                    nameGap: 20, //坐标名称与轴线的距离
+                    axisTick: { //坐标刻度线样式
+                        lineStyle: {
+                            color: "#fff"
+                        }
+                    },
+                    axisLabel: { //坐标轴刻度标签名样式
+                        color: "#fff",
+                        fontSize: "12",
+                        rotate: 30, //文字倾斜(当刻度标签名过长时使用)
+                        interval: 0 //显示全部
+                    },
+                    axisLine: { //坐标轴线设置
+                        show: true,
+                        lineStyle: {
+                            color: "#fff",
+                            width: "2"
+                        },
+                        symbol: ["none", "arrow"], //坐标轴末端箭头
+                        symbolSize: [8, 20], //箭头高度和宽度
+                        symbolOffset: [0, 16] //箭头与轴线端点的距离
+                    },
+                    splitNumber: 5,
+                },
+                yAxis: {
+                    name: "数量/人",
+                    splitNumber: 6,
+                    nameTextStyle: { //坐标轴名称样式
+                        color: "#fff",
+                        fontSize: "12",
+                        backgroundColor: "" //文字块背景色
+                    },
+                    nameGap: 20, //坐标名称与轴线的距离
+                    axisLine: { //坐标轴线设置
+                        show: true,
+                        lineStyle: {
+                            color: "#fff",
+                            width: "2"
+                        },
+                        symbol: ["none", "arrow"], //坐标轴末端箭头
+                        symbolSize: [8, 20], //箭头高度和宽度
+                        symbolOffset: [0, 16] //箭头与轴线端点的距离
+                    },
+                    axisTick: { //坐标刻度线样式
+                        lineStyle: {
+                            color: "#fff"
+                        }
+                    },
+                    axisLabel: { //坐标轴刻度标签名样式
+                        color: "#fff",
+                        fontSize: "12"
+                    },
+                },
+                series: [{
+                    //name:,
+                    type: 'bar',
+                    color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                        offset: 0,
+                        color: '#3E3CB5'
+                    }, {
+                        offset: 1,
+                        color: '#D66BFD'
+                    }]),
+                    data: y
+                }]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        </script>
+        <div id="cech2" style="width:480px;height:330px;margin-top:10px;float:right;"></div>
+        <script>
+
+            var j_cech2 = document.getElementById('data').getAttribute('data1');
+            var js_c_ech2 = JSON.parse(j_cech2);
+
+            let data = [];
+
+            for(var i=0;i<7;i++){
+                data.push({value:js_c_ech2[i][1],name:js_c_ech2[i][0]});
+            }
+
+            var chartDom = document.getElementById('cech2');
+            var myChart = echarts.init(chartDom);
+            var option;
+
+            option = {
+              title: {
+                    text: '热门城市占比',
+                    left: 10,
+                    top: 10,
+                    textStyle: {
+                        color: '#11F7A2'
+                    },
+                  },
+                backgroundColor: '#0A2E5D',
+                tooltip: {
+                textStyle:{fontSize:20}
+              },
+              legend: {
+                top: 'bottom',
+                textStyle: { color: "#FFFDFE" },
+              },
+              toolbox: {
+                show: true,
+                feature: {
+                  mark: { show: true },
+                  dataView: { show: true, readOnly: false },
+                  restore: { show: true },
+                  saveAsImage: { show: true }
+                }
+              },
+              series: [
+                {
+                  name: '旅游人数',
+                  type: 'pie',
+                  radius: [25, 125],
+                  center: ['50%', '50%'],
+                  roseType: 'area',
+                  itemStyle: {
+                    borderRadius: 8
+                  },
+                  data: data
+                }
+              ]
+            };
+
+            option && myChart.setOption(option);
+        </script>
+        <div id="cech3" style="width:740px;height:330px;margin-top:10px;float:left"></div>
+        <script>
+            var app = {};
+
+            var j_cech3 = document.getElementById('data').getAttribute('data2');
+            var js_c_ech3 = JSON.parse(j_cech3);
+
+            var chartDom = document.getElementById('cech3');
+            var myChart = echarts.init(chartDom);
+            var option;
+
+            option = {
+
+              title: {
+                    text: '热门景点Top榜',
+                    left: 10,
+                    top: 10,
+                    textStyle: {
+                        color: '#11F7A2'
+                    },
+                  },
+                backgroundColor: '#0A2E5D',
+              legend: {
+                 top: 'bottom',
+                 textStyle: { color: "#FFFDFE" },},
+              tooltip: {
+                trigger: 'item'
+              },
+              dataset: {
+                source: [
+                  ['景点', '优惠价', '原价'],
+                  js_c_ech3[0],
+                  js_c_ech3[1],
+                  js_c_ech3[2],
+                  js_c_ech3[3],
+                  js_c_ech3[4],
+                  js_c_ech3[5],
+                  js_c_ech3[6]
+                ]
+              },
+              xAxis: { type: 'category',
+                 axisTick: { //坐标刻度线样式
+                        lineStyle: {
+                            color: "#fff"
+                        }
+                    },
+                    axisLabel: { //坐标轴刻度标签名样式
+                        color: "#fff",
+                        fontSize: "12",
+                        rotate: 20, //文字倾斜(当刻度标签名过长时使用)
+                        interval: 0 //显示全部
+                    }
+              },
+              yAxis: {
+                  axisTick: { //坐标刻度线样式
+                        lineStyle: {
+                            color: "#fff"
+
+                        }
+                    },
+                    axisLabel: { //坐标轴刻度标签名样式
+                        color: "#fff",
+                        fontSize: "12",
+                        rotate: 20, //文字倾斜(当刻度标签名过长时使用)
+                        interval: 0 //显示全部
+                    }
+              },
+              series: [{ type: 'bar',
+                  itemStyle:{
+                                    normal:{
+                                        color:'#4ad2ff'
+                                    }
+                                },
+               }, { type: 'bar' ,
+                 itemStyle:{
+                                    normal:{
+                                        color:'#77C198'
+                                    }
+                                },
+               }]
+            };
+
+            option && myChart.setOption(option);
+
+        </script>
+        <div id="cech4" style="width:480px;height:330px;margin-top:10px;float:right;"></div>
+        <script>
+            // 基于准备好的dom，初始化echarts实例
+            var chartDom = document.getElementById('cech4');
+            var myChart = echarts.init(chartDom);
+            var option;
+
+            var j_cech4 = document.getElementById('data').getAttribute('data2');
+            var js_c_ech4 = JSON.parse(j_cech4);
+
+            var data_x = [];
+            var data_y1 = [];
+            var data_y2 = [];
+            for(var i=0;i<19;i++){
+               data_x[i] = js_c_ech4[i][0];
+               data_y1[i] = js_c_ech4[i][1];
+               data_y2[i] = js_c_ech4[i][2];
+            }
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: '景点价格走势',
+                    left: 10,
+                    top: 10,
+                    textStyle: {
+                        color: '#11F7A2'
+                    },
+                  },
+                backgroundColor: '#0A2E5D',
+                textStyle: { //全局字体样式设置
+                    color: "#000",
+                    fontSize: 12,
+                    fontWeight: "lighter"
+                },
+                nameTextStyle: { //轴名称字体样式
+                    color: "#0BA4E8",
+                    fontWeight: "normal"
+                },
+                tooltip: { //鼠标hover显示提示信息
+                    trigger: 'axis',
+                    textStyle: {fontSize: 20}
+                },
+                legend: {
+
+                    right: 100,
+                    top: 40,
+                    textStyle: {
+                        color: "#fff",
+                        fontSize: "12",
+                        fontWeight: "normal"
+                    }
+                },
+                grid: {
+                    top: "25%",
+                    left: '5%', //折线框左边距
+                    right: '10%', //折线框右边距
+                    bottom: '5%', //折线框下边距
+                    containLabel: true
+                },
+                color: ['#46B05D', '#AF4B87', '#03A2E9', '#7451D0'],
+                xAxis: {
+                    type: 'category',
+                    name: "景点",
+                    nameTextStyle: { //坐标轴名称样式
+                        color: "#fff",
+                        fontSize: "12",
+                        backgroundColor: "" //文字块背景色
+                    },
+                    data: data_x,
+                    splitLine: { //垂直分割线
+                        show: true,
+                        lineStyle: {
+                            color: "#02416D",
+                            width: "0.5"
+                        }
+                    },
+                    splitArea: {
+                        show: ''
+                    },
+                    axisLine: { //坐标轴线设置
+                        show: true,
+                        lineStyle: {
+                            color: "#fff",
+                            width: "2"
+                        },
+                        symbol: ["none", "arrow"], //坐标轴末端箭头
+                        symbolSize: [8, 20], //箭头高度和宽度
+                        symbolOffset: [0, 16] //箭头与轴线端点的距离
+                    },
+                    axisTick: { //坐标刻度线样式
+                        lineStyle: {
+                            color: "#fff",
+                            width: "2"
+                        }
+                    },
+                    axisLabel: { //刻度线
+                        textStyle: {
+                            color: "#fff",
+                            fontSize: 12,
+                            fontWeight: "normal"
+                        }
+                    },
+                },
+                yAxis: {
+                    type: 'value',
+                    //splitNumber: 5 ,				//轴分割段数
+                    min: 0, //轴坐标最小值
+                    //max:1300,						//轴坐标最大值
+        //			interval: 260, //强制每段260分割
+                    boundaryGap: false,
+                    name: "价格",
+                    nameTextStyle: { //坐标轴名称样式
+                        color: "#fff",
+                        fontSize: "12",
+                    },
+                    axisLine: { //坐标轴线设置
+                        show: true,
+                        lineStyle: {
+                            color: "#fff",
+                            width: "2"
+                        },
+                        symbol: ["none", "arrow"], //坐标轴末端箭头
+                        symbolSize: [8, 20], //箭头高度和宽度
+                        symbolOffset: [0, 16] //箭头与轴线端点的距离
+                    },
+                    splitLine: { //垂直分割线
+                        show: true,
+                        lineStyle: {
+                            color: "#02416D",
+                            width: "0.5"
+                        }
+                    },
+                    splitLine: { //垂直分割线
+                        show: true,
+                        lineStyle: {
+                            color: "#02416D",
+                            width: "0.5"
+                        }
+                    },
+                    axisTick: { //坐标刻度线样式
+                        lineStyle: {
+                            color: "#fff",
+                            width: "2"
+                        }
+                    },
+                    axisLabel: { //轴刻度字体样式设置
+                        textStyle: {
+                            color: "#fff",
+                            fontSize: 12,
+                            fontWeight: "normal"
+                        }
+                    }
+                },
+                series: [{
+                    name: '团购价',
+                    type: 'line',
+                    //symbol:"circle", 				//标记图像样式（折线上的点的样式，默认为圆形）
+                    symbolSize: "6",
+                    itemStyle: { //折线观点的样式
+                        //color:"#111947",
+                        //borderColor:"green"
+                    },
+                    smooth: true, //折线是否平滑
+                    data: data_y1
+                }, {
+                    name: '价格',
+                    type: 'line',
+                    smooth: true,
+                    data: data_y2
+                }]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        </script>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+
+{% endblock %}
+

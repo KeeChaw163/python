@@ -1,0 +1,617 @@
+{% extends "base.html" %}
+
+{% block title %}查询{% endblock %}
+
+{% block navbar %}
+<section class="content-header" id="data" data1="{{aech1}}">
+    <h1>目的地推荐查询&nbsp;&nbsp;<span style="font-size:8px;color:#F7A0A0;">和想去的人来一场说走就走的旅行</span></h1>
+    <ol class="breadcrumb">
+        <li><i class="fa fa-dashboard"></i> 当前位置</li>
+        <li class="active">旅游信息自主查询 > 目的地推荐查询</li>
+    </ol>
+</section>
+{% endblock %}
+
+{% block content %}
+
+<div class="box box-primary">
+    <div class="box-body">
+        <form method="post" action="{{url_for('main.getMenu1_recommend')}}" >
+            <input type="text" name="recommend_content1" id="recommend_content1" placeholder="请输入出发月份" style="color:#000000">
+            <input type="text" name="recommend_content2" id="recommend_content2" placeholder="请输入旅行标签" style="color:#000000">
+            <input type="text" name="recommend_content3" id="recommend_content3" placeholder="请输入旅行时长" style="color:#000000">
+            <input type="submit" value="查询一下" style="background:#5AF6A4;">
+        </form>
+        <div id="aech1" style="width:740px;height:330px;margin-top:20px;float:left"></div>
+        <script>
+            // 基于准备好的dom，初始化echarts实例
+            var j_aech1 = document.getElementById('data').getAttribute('data1');
+            var js_a_ech1 = JSON.parse(j_aech1);
+
+            var chartDom = document.getElementById('aech1');
+            var myChart = echarts.init(chartDom);
+            var option;
+            var x = [];
+            var y = [];
+            for(var i=0;i<10;i++){
+               x[i] = js_a_ech1[i+2][0];
+               y[i] = js_a_ech1[i+2][2];
+            }
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: '景点销量Top榜',
+                    left: 10,
+                    top: 10,
+                    textStyle: {
+                        color: '#3A8FF0'
+                    },
+                  },
+                backgroundColor: '#0A2E5D',
+                tooltip: {
+                textStyle:{fontSize:20}
+                },
+
+                grid: {
+                    top: "25%",
+                    left: '5%', //折线框左边距
+                    right: '10%', //折线框右边距
+                    bottom: '-2%', //折线框下边距
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    name: "景点",
+                    data: x,
+                    nameTextStyle: { //坐标轴名称样式
+                        color: "#fff",
+                        fontSize: "12",
+                        backgroundColor: "" //文字块背景色
+                    },
+                    nameGap: 20, //坐标名称与轴线的距离
+                    axisTick: { //坐标刻度线样式
+                        lineStyle: {
+                            color: "#fff"
+                        }
+                    },
+                    axisLabel: { //坐标轴刻度标签名样式
+                        color: "#fff",
+                        fontSize: "12",
+                        rotate: 30, //文字倾斜(当刻度标签名过长时使用)
+                        interval: 0 //显示全部
+                    },
+                    axisLine: { //坐标轴线设置
+                        show: true,
+                        lineStyle: {
+                            color: "#fff",
+                            width: "2"
+                        },
+                        symbol: ["none", "arrow"], //坐标轴末端箭头
+                        symbolSize: [8, 20], //箭头高度和宽度
+                        symbolOffset: [0, 16] //箭头与轴线端点的距离
+                    },
+                    splitNumber: 5,
+                },
+                yAxis: {
+                    name: "销量",
+                    splitNumber: 6,
+                    nameTextStyle: { //坐标轴名称样式
+                        color: "#fff",
+                        fontSize: "12",
+                        backgroundColor: "" //文字块背景色
+                    },
+                    nameGap: 20, //坐标名称与轴线的距离
+                    axisLine: { //坐标轴线设置
+                        show: true,
+                        lineStyle: {
+                            color: "#fff",
+                            width: "2"
+                        },
+                        symbol: ["none", "arrow"], //坐标轴末端箭头
+                        symbolSize: [8, 20], //箭头高度和宽度
+                        symbolOffset: [0, 16] //箭头与轴线端点的距离
+                    },
+                    axisTick: { //坐标刻度线样式
+                        lineStyle: {
+                            color: "#fff"
+                        }
+                    },
+                    axisLabel: { //坐标轴刻度标签名样式
+                        color: "#fff",
+                        fontSize: "12"
+                    },
+                },
+                series: [{
+                    //name:,
+                    type: 'bar',
+                    color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                        offset: 0,
+                        color: '#3E3CB5'
+                    }, {
+                        offset: 1,
+                        color: '#D66BFD'
+                    }]),
+                    data: y
+                }]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        </script>
+        <div id="aech2" style="width:480px;height:330px;margin-top:20px;float:right;"></div>
+        <script>
+            // 基于准备好的dom，初始化echarts实例
+            var chartDom = document.getElementById('aech2');
+            var myChart = echarts.init(chartDom);
+            var option;
+
+            var j_aech2 = document.getElementById('data').getAttribute('data1');
+            var js_a_ech2 = JSON.parse(j_aech2);
+
+            var data_x = [];
+            var data_y1 = [];
+            var data_y2 = [];
+            for(var i=0;i<19;i++){
+               data_x[i] = js_a_ech2[i+10][0];
+               data_y1[i] = js_a_ech2[i+10][3];
+               data_y2[i] = js_a_ech2[i+10][4];
+            }
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: '景点价格走势',
+                    left: 10,
+                    top: 10,
+                    textStyle: {
+                        color: '#11F7A2'
+                    },
+                  },
+                backgroundColor: '#0A2E5D',
+                textStyle: { //全局字体样式设置
+                    color: "#000",
+                    fontSize: 12,
+                    fontWeight: "lighter"
+                },
+                nameTextStyle: { //轴名称字体样式
+                    color: "#0BA4E8",
+                    fontWeight: "normal"
+                },
+                tooltip: { //鼠标hover显示提示信息
+                    trigger: 'axis',
+                    textStyle: {fontSize: 20}
+                },
+                legend: {
+
+                    right: 100,
+                    top: 40,
+                    textStyle: {
+                        color: "#fff",
+                        fontSize: "12",
+                        fontWeight: "normal"
+                    }
+                },
+                grid: {
+                    top: "25%",
+                    left: '5%', //折线框左边距
+                    right: '10%', //折线框右边距
+                    bottom: '5%', //折线框下边距
+                    containLabel: true
+                },
+                color: ['#46B05D', '#AF4B87', '#03A2E9', '#7451D0'],
+                xAxis: {
+                    type: 'category',
+                    name: "景点",
+                    nameTextStyle: { //坐标轴名称样式
+                        color: "#fff",
+                        fontSize: "12",
+                        backgroundColor: "" //文字块背景色
+                    },
+                    data: data_x,
+                    splitLine: { //垂直分割线
+                        show: true,
+                        lineStyle: {
+                            color: "#02416D",
+                            width: "0.5"
+                        }
+                    },
+                    splitArea: {
+                        show: ''
+                    },
+                    axisLine: { //坐标轴线设置
+                        show: true,
+                        lineStyle: {
+                            color: "#fff",
+                            width: "2"
+                        },
+                        symbol: ["none", "arrow"], //坐标轴末端箭头
+                        symbolSize: [8, 20], //箭头高度和宽度
+                        symbolOffset: [0, 16] //箭头与轴线端点的距离
+                    },
+                    axisTick: { //坐标刻度线样式
+                        lineStyle: {
+                            color: "#fff",
+                            width: "2"
+                        }
+                    },
+                    axisLabel: { //刻度线
+                        textStyle: {
+                            color: "#fff",
+                            fontSize: 12,
+                            fontWeight: "normal"
+                        }
+                    },
+                },
+                yAxis: {
+                    type: 'value',
+                    //splitNumber: 5 ,				//轴分割段数
+                    min: 0, //轴坐标最小值
+                    //max:1300,						//轴坐标最大值
+        //			interval: 260, //强制每段260分割
+                    boundaryGap: false,
+                    name: "价格",
+                    nameTextStyle: { //坐标轴名称样式
+                        color: "#fff",
+                        fontSize: "12",
+                    },
+                    axisLine: { //坐标轴线设置
+                        show: true,
+                        lineStyle: {
+                            color: "#fff",
+                            width: "2"
+                        },
+                        symbol: ["none", "arrow"], //坐标轴末端箭头
+                        symbolSize: [8, 20], //箭头高度和宽度
+                        symbolOffset: [0, 16] //箭头与轴线端点的距离
+                    },
+                    splitLine: { //垂直分割线
+                        show: true,
+                        lineStyle: {
+                            color: "#02416D",
+                            width: "0.5"
+                        }
+                    },
+                    splitLine: { //垂直分割线
+                        show: true,
+                        lineStyle: {
+                            color: "#02416D",
+                            width: "0.5"
+                        }
+                    },
+                    axisTick: { //坐标刻度线样式
+                        lineStyle: {
+                            color: "#fff",
+                            width: "2"
+                        }
+                    },
+                    axisLabel: { //轴刻度字体样式设置
+                        textStyle: {
+                            color: "#fff",
+                            fontSize: 12,
+                            fontWeight: "normal"
+                        }
+                    }
+                },
+                series: [{
+                    name: '团购价',
+                    type: 'line',
+                    //symbol:"circle", 				//标记图像样式（折线上的点的样式，默认为圆形）
+                    symbolSize: "6",
+                    itemStyle: { //折线观点的样式
+                        //color:"#111947",
+                        //borderColor:"green"
+                    },
+                    smooth: true, //折线是否平滑
+                    data: data_y1
+                }, {
+                    name: '价格',
+                    type: 'line',
+                    smooth: true,
+                    data: data_y2
+                }]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        </script>
+        <div id="aech3" style="width:740px;height:330px;margin-top:20px;float:left"></div>
+        <script>
+            var tip_data = [];
+            var echartdata = [];
+
+            var j_aech3 = document.getElementById('data').getAttribute('data1');
+            var js_a_ech3 = JSON.parse(j_aech3);
+
+            var chartDom = document.getElementById('aech3');
+            var myChart = echarts.init(chartDom);
+            var option;
+
+            for(i=0;i<4;i++){
+                tip_data[i] = js_a_ech3[i][1]
+                echartdata[i] = js_a_ech3[i][2]
+            }
+            var rich = {
+                yellow: {
+                    color: "#ffc72b",
+                    fontSize: 12,
+                    padding: [2, 4],
+                    align: 'center'
+                },
+                total: {
+                    color: "#ffc72b",
+                    fontSize: 12,
+                    align: 'center'
+                },
+                white: {
+                    color: "#fff",
+                    align: 'center',
+                    fontSize: 12,
+                    padding: [10, 0]
+                },
+                blue: {
+                    color: '#49dff0',
+                    fontSize: 12,
+                    align: 'center'
+                },
+                hr: {
+                    borderColor: 'auto',
+                    width: '100%',
+                    borderWidth: 1,
+                    height: 0,
+                }
+            };
+
+
+            var option = {
+
+                title: {
+                    text: '城市销量占比',
+                    left: 10,
+                    top: 10,
+                    textStyle: {
+                        color: '#11F7A2'
+                    },
+                  },
+                backgroundColor: '#0A2E5D',
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{b}: {c} ({d}%)",
+                    textStyle: {fontSize:20}
+                },
+                legend: {
+                    data: tip_data,
+
+                    bottom: 30,
+                    //left: "right",
+                    right: 30,
+                    align: "left",
+                    textStyle: { //字体样式
+                        color: "#fff",
+                        fontSize: 12,
+                        fontWeight: "normal"
+                    },
+                    itemGap: 20, //图块间隙
+                    itemWidth: 44, //图块宽
+                    itemHeight: 18, //图块高
+                    orient: "vertical"
+                },
+                grid: {
+                    top: "10%",
+                    // left: '1%', //折线框左边距
+                    right: '1%', //折线框右边距
+                    // bottom: '20%', //折线框下边距
+                    containLabel: true
+                },
+                series: [{
+                    type: 'pie',
+                    label: {
+                        fontSize: 12,
+                        normal: {
+                            color: "#fff",
+                            //formatter: '{b|{b}\n     {d}%}',
+                            formatter: function(params, ticket, callback) {
+                                var total = 0; //总数量
+                                var percent = 0; //占比
+                                echartdata.forEach(function(value, index) {
+                                    total += value*100;
+                                });
+                                percent = ((params.value*100 / total) * 100).toFixed(1);
+                                return '{white|' + params.name + '}\n\n{yellow|' + params.value + '}\n{blue|' + percent + '%}';
+                            },
+                            padding: [0, -50],
+                            rich: rich
+                        }
+                    },
+                    labelLine: {
+                        lineStyle: {
+                            //color: auto
+                            width: 2
+                        },
+                        length: 20,
+                        length2: 50
+                    },
+                    radius: ['40%', '60%'],
+                    data: [{
+                        value: echartdata[0],
+                        itemStyle: {
+                            color: "#E6C146"
+                        },
+                        name: tip_data[0]
+                    }, {
+                        value: echartdata[1],
+                        itemStyle: {
+                            color: "#46F0FF"
+                        },
+                        name: tip_data[1]
+                    }, {
+                        value: echartdata[2],
+                        itemStyle: {
+                            color: "#D591FE",
+                        },
+                        name: tip_data[2]
+                    }, {
+                        value: echartdata[3],
+                        itemStyle: {
+                            color: "#7689FF",
+                        },
+                        name: tip_data[3]
+                    }]
+                }, ]
+            };
+            myChart.setOption(option);
+        </script>
+        <div id="aech4" style="width:480px;height:330px;margin-top:20px;float:right;"></div>
+        <script>
+
+            var j_aech4 = document.getElementById('data').getAttribute('data1');
+            var js_a_ech4 = JSON.parse(j_aech4);
+
+
+            var chartDom = document.getElementById('aech4');
+            var myChart = echarts.init(chartDom);
+            var option;
+            var x = [];
+            var y1 = [];
+            var y2 = [];
+
+            for(var i=0;i<10;i++){
+               x[i] = js_a_ech4[i][1];
+               y1[i] = js_a_ech4[i][3];
+               y2[i] = js_a_ech4[i][4];
+            }
+
+            option = {
+              title: {
+                    text: '城市景点平均额',
+                    left: 10,
+                    top: 10,
+                    textStyle: {
+                        color: '#3A8FF0'
+                    },
+                  },
+              backgroundColor: '#0A2E5D',
+              tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                  type: 'cross',
+                  crossStyle: {
+                    color: '#999'
+                  }
+                }
+              },
+              toolbox: {
+                feature: {
+                  dataView: { show: true, readOnly: false },
+                  magicType: { show: true, type: ['line', 'bar'] },
+                  restore: { show: true },
+                  saveAsImage: { show: true }
+                }
+              },
+              legend: {
+
+                    right: 150,
+                    top: 10,
+                    textStyle: {
+                        color: "#fff",
+                        fontSize: "12",
+                        fontWeight: "normal"
+                    }
+                },
+              xAxis: [
+                {
+                  type: 'category',
+                  data: x,
+                  axisLabel: {
+                        color: '#fff'
+                        },
+                  axisPointer: {
+                   type: 'shadow'
+                  }
+                }
+              ],
+              yAxis: [
+                {
+                  type: 'value',
+                  name: '原价',
+                  nameTextStyle: { //坐标轴名称样式
+                        color: "#fff",
+                        fontSize: "12",
+                        backgroundColor: "" //文字块背景色
+                    },
+
+                  min: 0,
+                  max: 550,
+                  interval: 50,
+                  axisLabel: {
+                  color:'#fff',
+                    formatter: '{value}'
+                  }
+                },
+                {
+                  type: 'value',
+                  name: '秒杀价',
+                  nameTextStyle: { //坐标轴名称样式
+                        color: "#fff",
+                        fontSize: "12",
+                        backgroundColor: "" //文字块背景色
+                    },
+                  min: 0,
+                  max: 175,
+                  interval: 16,
+                  axisLabel: {
+                    color:'#fff',
+                    formatter: '{value} '
+                  }
+                }
+              ],
+              series: [
+                {
+                  name: '原价',
+                  type: 'bar',
+                  tooltip: {
+                    valueFormatter: function (value) {
+                      return value;
+                    }
+                  },
+                  itemStyle:{
+                                    normal:{
+                                        color:'#59B05E'
+                                    }
+                                },
+                  data: y2
+                },
+                {
+                  name: '秒杀价',
+                  type: 'line',
+                  //yAxisIndex: 1,
+                  tooltip: {
+                    valueFormatter: function (value) {
+                      return value;
+                    }
+                  },
+                  axisLabel: {
+                        color: '#fff'
+                        },
+                    itemStyle: {
+                    normal: {
+                    color:'#fff',
+                        lineStyle: {
+                            color: '#8155D7' //改变折线颜色
+                        }
+                    }
+			    },
+                  data: y1
+                }
+              ]
+            };
+
+            option && myChart.setOption(option);
+
+
+        </script>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+
+{% endblock %}
+
